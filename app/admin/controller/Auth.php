@@ -405,9 +405,15 @@ class Auth extends Base
     public function ruleDel()
     {
         $id = Request::param('id');
-        if ($id) {
+        $child = AuthRule::where('pid',$id)->find();
+        if ($id && !$child) {
             AuthRule::destroy($id);
             $this->success('删除成功');
+        }elseif($child){
+            $this->error('有下级，先删除下级');
+
+        }else{
+            $this->error('id 不存在');
         }
     }
 
@@ -434,7 +440,7 @@ class Auth extends Base
                 $this->error('排序不可为空');
             }
             if (AuthRule::create($data)) {
-                $this->success('权限添加成功', 'Auth/adminRule');
+                $this->success('权限添加成功', url('adminRule'));
             } else {
                 $this->error('权限添加失败');
             }
@@ -442,7 +448,7 @@ class Auth extends Base
             $list = Db::name('auth_rule')
                 ->order('sort ASC')
                 ->select();
-            $list = tree($list);
+            $list = cate_tree($list);
             $pid = Request::param('id') ? Request::param('id') : 0;
             $view = [
                 'info' => null,
@@ -460,15 +466,15 @@ class Auth extends Base
         if (request()->isPost()) {
             $data = Request::param();
             $where['id'] = $data['id'];
-            AuthRule::update($data, $where);
-            $this->success('修改成功!', 'Auth/adminRule');
+            AuthRule::update($data);
+            $this->success('修改成功!', url('Auth/adminRule'));
         } else {
             $list = Db::name('auth_rule')
                 ->order('sort asc')
                 ->select();
-            $list = tree($list);
+            $list = cate_tree($list);
             $id = Request::param('id');
-            $info = AuthRule::find($id);
+            $info = AuthRule::find($id)->toArray();
             $view = [
                 'info' => $info,
                 'ruleList' => $list,

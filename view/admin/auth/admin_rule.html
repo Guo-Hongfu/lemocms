@@ -6,8 +6,8 @@
                 <legend>权限{:lang('list')}</legend>
             </fieldset>
             <blockquote class="layui-elem-quote">
-                <a href="{:url('ruleAdd')}" class="layui-btn layui-btn-sm">{:lang('add')}路由</a>
-                <a href="{:url('clear')}" class="layui-btn layui-btn-sm layui-btn-danger">删除路由</a>
+                <button class="layui-btn layui-btn-sm LM-add">{:lang('add')}路由</button>
+<!--                <a href="{:url('clear')}" class="layui-btn layui-btn-sm layui-btn-danger">删除路由</a>-->
                 <a class="layui-btn layui-btn-normal layui-btn-sm" onclick="openAll();">展开或折叠全部</a>
             </blockquote>
             <table class="layui-table" id="treeGrid" lay-filter="treeGrid"></table>
@@ -132,6 +132,16 @@
                     treeGrid.render;
                 }
             })
+        })
+
+        $('.LM-add').click(function () {
+            var index = layer.open({
+                type: 2,
+                content: '{:url("ruleAdd")}?id='+1,
+                area: ['800px', '800px'],
+                maxmin: true
+            });
+            layer.full(index);
         })
 
     });

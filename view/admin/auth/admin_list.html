@@ -7,7 +7,7 @@
 
                 <blockquote class="layui-elem-quote">
                         <div class="layui-btn-group">
-                            <a href="{:url('adminAdd')}" class="layui-btn layui-btn-normal">{:lang('add')}{:lang('admin')}</a>
+                            <button href="{:url('adminAdd')}" class="layui-btn layui-btn-normal LM-add">{:lang('add')}{:lang('admin')}</button>
                         </div>
                         <div class="layui-inline">
 
@@ -92,11 +92,21 @@
                 });
             }
         });
+        $('.LM-add').click(function () {
+            var index = layer.open({
+                type: 2,
+                content: '{:url("adminedit")}?id='+1,
+                area: ['800px', '800px'],
+                maxmin: true
+            });
+            layer.full(index);
+        })
         $('#search').click(function () {
             var $keys = $('#keys').val();
             if(!$keys){
                 return layer.msg('请输入关键词');
             }
+
             tableIn.reload({ page: {page: 1},where: {keys: $keys}});
 
         })

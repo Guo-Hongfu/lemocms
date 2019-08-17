@@ -19,7 +19,7 @@ class Login extends BaseController {
             if ($admin && $admin_sign) {
                 return redirect('index/index');
             }
-            $token = $this->request->buildToken(config('admin.token'), 'sha1');
+            $token =Request::buildToken(config('admin.token'), 'sha1');
             View::assign('token', $token);
             return View::fetch();
 
