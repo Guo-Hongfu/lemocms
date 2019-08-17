@@ -1,0 +1,104 @@
+{include file="common/header"/}
+<div class="LM-container">
+    <div class="LM-main">
+        <div class="admin-main layui-anim layui-anim-upbit">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>{:lang('admin')}{:lang('list')}</legend>
+
+                <blockquote class="layui-elem-quote">
+                        <div class="layui-btn-group">
+                            <a href="{:url('adminAdd')}" class="layui-btn layui-btn-normal">{:lang('add')}{:lang('admin')}</a>
+                        </div>
+                        <div class="layui-inline">
+
+                            <label class="layui-form-label">用户组名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="keys" id="keys" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                            </div>
+                            <button class="layui-btn data-add-btn" lay-submit="" lay-filter="add" id="search">搜索</button>
+                        </div>
+                </blockquote>
+
+            </fieldset>
+
+            <table class="layui-table" id="list" lay-filter="list"></table>
+        </div>
+
+    </div>
+</div>
+{include file="common/footer"/}
+<script type="text/html" id="action">
+    <a href="{:url('adminEdit')}?id={{d.id}}" class="layui-btn layui-btn-xs">{:lang('edit')}</a>
+    {{# if(d.id==1){ }}
+    <a href="#" class="layui-btn layui-btn-xs layui-btn-disabled">{:lang('del')}</a>
+    {{# }else{  }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">{:lang('del')}</a>
+    {{# } }}
+</script>
+<script type="text/html" id="status">
+    {{# if(d.id==1){ }}
+    <input type="checkbox" disabled name="status" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="status" checked>
+    {{# }else{  }}
+    <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="status" {{ d.status == 1 ? 'checked' : '' }}>
+    {{# } }}
+</script>
+
+<script>
+    layui.use(['table','form','layer'], function() {
+        var table = layui.table,form = layui.form,$ = layui.jquery;
+        var tableIn = table.render({
+            elem: '#list',
+            url: '{:url("adminList")}',
+            method:'post',
+            title:'{:lang("admin")}{:lang("list")}',
+            cols: [[
+                {field:'id', title: 'ID', width:60,fixed: true}
+                ,{field:'username', title: '用户名', width:180}
+                ,{field:'title', title: '{:lang("adminGroup")}', width:100}
+                ,{field:'email', title: '{:lang("email")}', width:200}
+                ,{field:'mobile', title: '{:lang("mobile")}', width:150}
+                ,{field:'ip', title: '{:lang("ip")}',width:150,hide:true}
+                ,{field:'status', title: '{:lang("status")}',width:150,toolbar: '#status'}
+                ,{width:160, align:'center', toolbar: '#action'}
+            ]]
+        });
+        form.on('switch(status)', function(obj){
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            var id = this.value;
+            var is_open = obj.elem.checked===true?1:0;
+            $.post('{:url("adminState")}',{'id':id,'is_open':is_open},function (res) {
+                layer.close(loading);
+                if (res.code>0) {
+                    tableIn.reload();
+                }else{
+                    layer.msg(res.msg,{time:1000,icon:2});
+                    return false;
+                }
+            })
+        });
+        table.on('tool(list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('{:lang("Are you sure you want to delete it")}', function(index){
+                    $.post("{:url('adminDel')}",{id:data.id},function(res){
+                        if (res.code>0) {
+                            layer.msg(res.msg,{time:1000,icon:1});
+                            obj.del();
+                        }else{
+                            layer.msg(res.msg,{time:1000,icon:2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+        $('#search').click(function () {
+            var $keys = $('#keys').val();
+            if(!$keys){
+                return layer.msg('请输入关键词');
+            }
+            tableIn.reload({ page: {page: 1},where: {keys: $keys}});
+
+        })
+    });
+</script>

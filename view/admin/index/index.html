@@ -1,0 +1,109 @@
+{include file='common/header' /}
+<body class="layui-layout-body LM-all">
+<div class="layui-layout layui-layout-admin">
+
+    <div class="layui-header header">
+        <div class="layui-logo"><a href="">
+            <img src="{:site_logo()}" alt="lemocms">
+            <h1>{:site_name()}</h1>
+        </a>
+        </div>
+        <a>
+            <div class="LM-tool"><i title="展开" class="fa fa-outdent" data-side-fold="1"></i></div>
+        </a>
+
+        <ul class="layui-nav layui-layout-left layui-header-menu layui-header-pc-menu mobile layui-hide-xs">
+        </ul>
+        <ul class="layui-nav layui-layout-left layui-header-menu mobile layui-hide-sm">
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="fa fa-list-ul"></i> 选择模块</a>
+                <dl class="layui-nav-child layui-header-mini-menu">
+                </dl>
+            </li>
+        </ul>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;" data-clear="清理" data-href="{:url('cleardata')}" class="LM-clear"><i class="fa fa-trash-o"></i></a>
+            </li>
+            <li class="layui-nav-item LM-setting">
+                <a href="javascript:;">{:session('admin.username')}</a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="javascript:;" data-iframe-tab="{:url('auth/adminEdit')}" data-title="基本资料" data-icon="fa fa-gears">基本资料</a>
+                    </dd>
+                    <dd>
+                        <a href="javascript:;" data-iframe-tab="{:url('password')}" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+                    </dd>
+                    <dd>
+                        <a href="javascript:;" class="login-out">退出登录</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item LM-select-bgcolor mobile layui-hide-xs">
+                <a href="javascript:;" data-bgcolor="配色方案"><i class="fa fa-ellipsis-v"></i></a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll layui-left-menu">
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <div class="layui-tab" lay-filter="LMTab" id="top_tabs_box">
+            <ul class="layui-tab-title" id="top_tabs">
+                <li class="layui-this" id="LMHomeTabId" lay-id=""></li>
+            </ul>
+<!--            关闭按钮-->
+            <ul class="layui-nav closeBox">
+                <li class="layui-nav-item">
+                    <a href="javascript:;"> <i class="fa fa-dot-circle-o"></i> 页面操作</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-page-close="other"><i class="fa fa-window-close"></i> 关闭其他</a></dd>
+                        <dd><a href="javascript:;" data-page-close="all"><i class="fa fa-window-close-o"></i> 关闭全部</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <div class="layui-tab-content clildFrame">
+                <!--           加载iframe          /-->
+                <div id="LMHomeTabIframe" class="layui-tab-item layui-show"
+                </div>
+
+            </div>
+        </div>
+
+        <div class="layui-footer footer footer-demo" id="admin-footer">
+            <div class="layui-main">
+                <p>2018 ©
+                    <a href="http://www.lemocms.com/">www.lemocms.com</a> Apache Licence 2.0
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+{include file='common/footer' /}
+<script>
+    var menus ='{$menus|raw}';
+    layui.config({
+        base: "/static/admin/js/",
+        version: true
+    }).extend({
+        LM: "LM"
+    }).use(['element', 'layer', 'LM'], function () {
+        var $ = layui.jquery,
+            element = layui.element,
+            layer = layui.layer;
+
+        LM.init(menus);
+
+
+    });
+</script>
+</body>
+

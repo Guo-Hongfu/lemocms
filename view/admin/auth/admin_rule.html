@@ -1,0 +1,144 @@
+{include file="common/header"/}
+<div class="LM-container">
+    <div class="LM-main">
+        <div class="admin-main layui-anim layui-anim-upbit">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>权限{:lang('list')}</legend>
+            </fieldset>
+            <blockquote class="layui-elem-quote">
+                <a href="{:url('ruleAdd')}" class="layui-btn layui-btn-sm">{:lang('add')}路由</a>
+                <a href="{:url('clear')}" class="layui-btn layui-btn-sm layui-btn-danger">删除路由</a>
+                <a class="layui-btn layui-btn-normal layui-btn-sm" onclick="openAll();">展开或折叠全部</a>
+            </blockquote>
+            <table class="layui-table" id="treeGrid" lay-filter="treeGrid"></table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="auth">
+    <input type="checkbox" name="auth_open" value="{{d.id}}" lay-skin="switch" lay-text="是|否" lay-filter="auth_open" {{ d.auth_open == 0 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="status">
+    <input type="checkbox" name="menu_status" value="{{d.id}}" lay-skin="switch" lay-text="显示|隐藏" lay-filter="menu_status" {{ d.menu_status == 1 ? 'checked' : '' }}>
+</script>
+<script type="text/html" id="order">
+    <input name="{{d.id}}" data-id="{{d.id}}" class="list_order layui-input" value=" {{d.sort}}" size="10"/>
+</script>
+<script type="text/html" id="icon">
+    <span class="icon {{d.icon}}"></span>
+</script>
+<script type="text/html" id="action">
+    <a href="{:url('ruleEdit')}?id={{d.id}}" class="layui-btn layui-btn-xs">{:lang('edit')}</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">{:lang('del')}</a>
+</script>
+<script type="text/html" id="topBtn">
+    <a href="{:url('ruleAdd')}" class="layui-btn layui-btn-sm">{:lang('add')}权限</a>
+</script>
+{include file="common/footer"/}
+<script>
+    var editObj=null,ptable=null,treeGrid=null,tableId='treeGrid',layer=null;
+    layui.config({
+        base: '/static/plugins/layui/extend/'
+    }).extend({
+        treeGrid: 'treeGrid/treeGrid'
+    }).use(['jquery','treeGrid','layer','form'], function(){
+        var $=layui.jquery ,form = layui.form;
+        treeGrid = layui.treeGrid;
+        layer=layui.layer;
+
+        ptable=treeGrid.render({
+            id:tableId
+            ,elem: '#'+tableId
+            ,idField:'id'
+            ,url:'{:url("adminRule")}'
+            ,cellMinWidth: 100
+            ,treeId:'id'//树形id字段名称
+            ,treeUpId:'pid'//树形父id字段名称
+            ,treeShowName:'title'//以树形式显示的字段
+            ,height:'full-140'
+            ,isFilter:false
+            ,iconOpen:true//是否显示图标【默认显示】
+            ,isOpenDefault:true//节点默认是展开还是折叠【默认展开】
+            ,cols: [[
+                {field: 'id', title: '{:lang("id")}', width: 70, fixed: true},
+                {field: 'icon', align: 'center',title: '{:lang("icon")}', width: 60,templet: '#icon'},
+                {field: 'title', title: '权限名称', width: 200},
+                {field: 'href', title: '控制器/方法', width: 200},
+                {field: 'auth_open',align: 'center', title: '是否验证权限', width: 150,toolbar: '#auth'},
+                {field: 'menu_status',align: 'center',title: '菜单{:lang("status")}', width: 150,toolbar: '#status'},
+                {field: 'sort',align: 'center', title: '{:lang("order")}', width: 80, templet: '#order'},
+                {width: 160,align: 'center', toolbar: '#action'}
+            ]]
+            ,page:false
+        });
+        treeGrid.on('tool('+tableId+')',function (obj) {
+            var data = obj.data;
+            if(obj.event === 'del'){
+                layer.confirm('您确定要删除吗？', function(index){
+                    var loading = layer.load(1, {shade: [0.1, '#fff']});
+                    $.post("{:url('ruleDel')}",{id:data.id},function(res){
+                        layer.close(loading);
+                        if(res.code==1){
+                            layer.msg(res.msg,{time:1000,icon:1});
+                            obj.del();
+                        }else{
+                            layer.msg(res.msg,{time:1000,icon:2});
+                        }
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+        form.on('switch(auth_open)', function(obj){
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            var id = this.value;
+            var auth_open = obj.elem.checked===true?0:1;
+            $.post('{:url("ruleOpen")}',{'id':id,'auth_open':auth_open},function (res) {
+                layer.close(loading);
+                if (res.code==1) {
+                    treeGrid.render;
+                }else{
+                    layer.msg(res.msg,{time:1000,icon:2});
+                    treeGrid.render;
+                    return false;
+                }
+            })
+        });
+        form.on('switch(menu_status)', function(obj){
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            var id = this.value;
+            var menu_status = obj.elem.checked===true?1:0;
+            $.post('{:url("ruleState")}',{'id':id,'menu_status':menu_status},function (res) {
+                layer.close(loading);
+                if (res.code==1) {
+                    treeGrid.render;
+                }else{
+                    layer.msg(res.msg,{time:1000,icon:2});
+                    treeGrid.render;
+                    return false;
+                }
+            })
+        });
+        $('body').on('blur','.list_order',function() {
+            var id = $(this).attr('data-id');
+            var sort = $(this).val();
+            $.post('{:url("ruleOrder")}',{id:id,sort:sort},function(res){
+                if(res.code==1){
+                    layer.msg(res.msg,{time:1000,icon:1},function(){
+                        location.href = res.url;
+                    });
+                }else{
+                    layer.msg(res.msg,{time:1000,icon:2});
+                    treeGrid.render;
+                }
+            })
+        })
+
+    });
+
+    function openAll() {
+        var treedata=treeGrid.getDataTreeList(tableId);
+        treeGrid.treeOpenAll(tableId,!treedata[0][treeGrid.config.cols.isOpen]);
+    }
+
+</script>

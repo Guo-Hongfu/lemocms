@@ -1,0 +1,306 @@
+{include file="common/header"/}
+<div class="LM-container">
+    <div class="LM-main">
+        <div class="layui-form LM-form">
+
+            <div class="layui-tab">
+                <ul class="layui-tab-title">
+
+                    <li class="layui-this">网站设置</li>
+                    <li class="">邮箱设置</li>
+                    <li class="">短信设置</li>
+                    <li class="">上传配置</li>
+
+                </ul>
+
+                <div class="layui-tab-content">
+<!--网站配置-->
+                    <div class="layui-tab-item layui-show">
+                        <form class="layui-form layui-form-pane" lay-filter="form-config">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">网站名称</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="site_name" lay-verify="required" lay-reqtext="网站名称不能为空"
+                                           placeholder="请输入网站名称" value="" class="layui-input">
+                                    <!--                                    <tip>填写自己部署网站的名称。</tip>-->
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">网站域名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="site_domain" lay-verify="url" lay-reqtext="网站域名不能为空"
+                                           placeholder="请输入网站域名" value="" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">网站邮箱</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="site_email" lay-verify="email" lay-reqtext="网站域名不能为空"
+                                           placeholder="请输入网站域名" value="" class="layui-input">
+                                </div>
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">网站LOGO</label>
+                                <input type="hidden" name="site_logo" id="logo">
+                                <div class="layui-input-block">
+                                    <div class="layui-upload">
+                                        <button type="button" class="layui-btn layui-btn-primary" id="logoBtn"><i
+                                                class="icon icon-upload3"></i>点击上传
+                                        </button>
+                                        <div class="layui-upload-list">
+                                            <img class="layui-upload-img" id="site_logo">
+                                            <p id="demoText"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label required">首页标题</label>
+                                <div class="layui-input-block">
+                                    <textarea name="site_seo_title" class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">META关键词</label>
+                                <div class="layui-input-block">
+                                    <textarea name="site_seo_keywords" class="layui-textarea"
+                                              placeholder="多个关键词用英文状态 , 号分割"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">META描述</label>
+                                <div class="layui-input-block">
+                                    <textarea name="site_seo_desc" placeholder="建议200字以内"
+                                              class="layui-textarea"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label required">版权信息</label>
+                                <div class="layui-input-block">
+                                    <textarea name="site_copyright" class="layui-textarea">© 2019 www.lemocms.com MIT license</textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button type="button" class="layui-btn" lay-submit lay-filter="submit">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel">重置</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+<!--邮箱设置-->
+                    <div class="layui-tab-item">
+                        <form class="layui-form layui-form-pane" lay-filter="form-config">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">邮箱服务器</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email_host" lay-verify="required" lay-reqtext="邮箱服务器地址不能为空"
+                                           placeholder="请输入邮箱服务器" value="" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">邮箱端口</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email_port" lay-verify="required" lay-reqtext="端口不能为空"
+                                           placeholder="请输入邮箱端口" value="" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">邮箱地址</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email_addr" lay-verify="required" lay-reqtext="邮箱地址不能为空"
+                                           placeholder="请输入邮箱地址" value="" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">发件人邮箱</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email_id" placeholder="请输入邮箱用户名" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">邮箱密码</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email_pass" placeholder="请输入邮箱密码" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">邮箱协议</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="email_secure" placeholder="请输入邮箱发送协议" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button type="button" class="layui-btn" lay-submit lay-filter="submit">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel">重置</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+<!--                    短信设置-->
+                    <div class="layui-tab-item">
+                        <form class="layui-form layui-form-pane" lay-filter="form-config">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">阿里短信appid</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="sms_appid" lay-verify="required" placeholder="请输入阿里短信appid" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">阿里短信密钥</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="sms_secret" lay-verify="required" placeholder="请输入密钥" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">阿里短信产品名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="sms_product" lay-verify="required" placeholder="请输入阿里短信产品名" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label required">阿里短信模板id</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="sms_template" lay-verify="required" placeholder="请输入阿里短信模板id" value=""
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button type="button" class="layui-btn" lay-submit lay-filter="submit">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel">重置</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+<!--上传配置-->
+                    <div class="layui-tab-item">
+                        <form class="layui-form layui-form-pane" lay-filter="form-config">
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">文件类型</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="upload_file_type"
+                                           value="bmp|png|gif|jpg|jpeg|zip|rar|txt|ppt|xls|doc|mp3|mp4"
+                                           class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">最大文件</label>
+                                <div class="layui-input-inline" style="width: 80px;">
+                                    <input type="text" name="upload_file_max" lay-verify="number" value="2048"
+                                           class="layui-input">
+                                </div>
+                                <div class="layui-input-inline layui-input-company"><label class="layui-form-label">M</label></div>
+                                <div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button type="button" class="layui-btn" lay-submit lay-filter="submit">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary" lay-submit lay-filter="cancel">重置</button>
+
+                                </div>
+
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{include file="common/footer"/}
+<script>
+    layui.use(['form', 'layer','upload','element'], function () {
+        var form = layui.form,layer = layui.layer,upload = layui.upload,$ = layui.jquery,element = layui.element;
+        var config = {$config|raw};
+
+        form.val("form-config", config);
+        $('#site_logo').attr('src',config.site_logo);
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#logoBtn'
+            ,url: '{:url("uploads/uploads")}'
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#site_logo').attr('src', result); //图片链接（base64）
+                });
+            }
+            ,done: function(res){
+                //上传成功
+                if(res.code>0){
+                    $('#logo').val(res.url);
+                }else{
+                    //如果上传失败
+                    return layer.msg('上传失败');
+                }
+            }
+            ,error: function(){
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        //提交监听
+        form.on('submit(submit)', function (data) {
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            $.post("{:url('system/site')}",data.field,function(res){
+                layer.close(loading);
+                if(res.code > 0){
+                    layer.msg(res.msg,{icon: 1, time: 1000},function(){
+                        location.href = res.url;
+                    });
+                }else{
+                    layer.msg(res.msg,{icon: 2, time: 1000});
+                }
+            });
+        })
+    })
+</script>
