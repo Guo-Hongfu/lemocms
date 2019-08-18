@@ -5,6 +5,7 @@ use think\facade\Config;
 use think\facade\Env;
 use think\facade\Request;
 class Uploads extends Base{
+
     //上传验证规则
     protected $uploadValidate = [
         'image' => 'filesize:1024000|fileExt:jpg,png,gif,jpeg,rar,zip,avi,rmvb,3gp,flv,mp3,txt,doc,xls,ppt,pdf,xls,docx,xlsx,doc'

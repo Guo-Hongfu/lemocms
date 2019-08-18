@@ -3,18 +3,17 @@
     <div class="LM-main">
         <div class="admin-main layui-anim layui-anim-upbit">
             <fieldset class="layui-elem-field layui-field-title">
-                <legend>权限组{:lang('list')}</legend>
+                <legend>广告位{:lang('list')}</legend>
                 <blockquote class="layui-elem-quote">
-                    <form class="layui-form layui-form-pane">
-
-                        <div class="layui-inline">
-                            <label class="layui-form-label">{:lang('adminGroup')}</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="title" lay-verify="required" placeholder="{:lang('pleaseEnter')}添加" autocomplete="off" class="layui-input">
-                            </div>
-                            <button class="layui-btn data-add-btn" lay-submit="" lay-filter="add">{:lang('add')}</button>
+                        <div class="layui-btn-group">
+                            <button  class="layui-btn layui-btn-normal" id="LM-add">{:lang('add')}广告位</button>
                         </div>
-                    </form>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input type="text" id='keys' name="keys" lay-verify="required" placeholder="{:lang('pleaseEnter')}" autocomplete="off" class="layui-input">
+                            </div>
+                            <button class="layui-btn data-add-btn" lay-submit="" lay-filter="add" id="search">{:lang('search')}</button>
+                        </div>
                   </blockquote>
 
             </fieldset>
@@ -28,27 +27,21 @@
 
 
 <script type="text/html" id="action">
-    <a href="{:url('groupAccess')}?id={{d.id}}" class="layui-btn layui-btn-xs layui-btn-normal">配置规则</a>
-    <a href="{:url('groupEdit')}?id={{d.id}}" class="layui-btn layui-btn-warm layui-btn-xs">{:lang('edit')}</a>
-    {{# if(d.id==1){ }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs layui-btn-disabled">{:lang('del')}</a>
-    {{# }else{  }}
+    <a class="layui-btn  layui-btn-xs" lay-event="edit">{:lang('edit')}</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">{:lang('del')}</a>
-    {{# } }}
 </script>
 <script type="text/html" id="status">
-    {{# if(d.id==1){ }}
-    <input type="checkbox" disabled name="status" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="status" checked>
-    {{# }else{  }}
     <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="开启|关闭" lay-filter="status" {{ d.status == 1 ? 'checked' : '' }}>
-    {{# } }}
 </script>
+
+<script type="text/html" id="image">
+    {{d.ad_name}}<img src="/static/admin/images/image.gif" onmouseover="layer.tips('<img src={{d.ad_image}}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();">
+</script>
+
 <script type="text/html" id="create_time">
     {{layui.util.toDateString(d.create_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
 </script>
-<script type="text/html" id="update_time">
-    {{layui.util.toDateString(d.update_time*1000, 'yyyy-MM-dd HH:mm:ss')}}
-</script>
+
 {include file="common/footer"/}
 <script>
     layui.use(['form', 'table'], function () {
@@ -58,54 +51,53 @@
 
         var tableIn = table.render({
             elem: '#list',
-            url: '{:url("group")}',
+            url: '{:url("pos")}',
             method: 'post',
             cols: [[
                 {checkbox: true, fixed: true},
                 {field: 'id', title: 'ID', width: 80, fixed: true, sort: true},
-                {field: 'title', title: '组名', width: 150, fixed: true,},
+                {field: 'position_name', title: '名称', width: 120, fixed: true,},
+                {field: 'position_desc', title: '描述', width: 250},
+
                 {field: 'status', title: '状态', width: 180, templet:'#status'},
                 {field: 'create_time', title: '添加时间', width: 180,templet:'#create_time'},
-                {field: 'update_time', title: '修改时间', width: 180,templet:'#update_time'},
+                // {field: 'update_time', title: '修改时间', width: 180,templet:'#update_time'},
                 {width:200, align:'center', toolbar: '#action'}
 
             ]],
 
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true
         });
-        // 监听添加操作
-        form.on('submit(add)', function (data) {
-            var result = data.field;
-            loading =layer.load(1, {shade: [0.1,'#fff']});
-            $.post("{:url('groupAdd')}", result, function (res) {
-                layer.close(loading);
-                if (res.code > 0) {
-                    layer.msg(res.msg, {time: 2000, icon: 1});
-                    tableIn.reload();
-                } else {
-                    layer.msg(res.msg, {time: 2000, icon: 2});
-                    return false;
-                }
 
-            });
-            return false;
-        })
 
-        table.on('tool(list)', function(data){
-            var data = data.data;
-            if(data.event === 'del'){
+
+        table.on('tool(list)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
                 layer.confirm('你确定要删除该分组吗？', function(index){
                     loading =layer.load(1, {shade: [0.1,'#fff']});
-                    $.post("{:url('groupDel')}",{id:data.id},function(res){
+                    $.post("{:url('posDel')}",{id:data.id},function(res){
                         layer.close(loading);
                         layer.close(index);
                         if(res.code>0){
                             layer.msg(res.msg,{time:1000,icon:1});
-                            data.del();
+                            obj.del();
                         }else{
                             layer.msg(res.msg,{time:1000,icon:2});
                         }
                     });
                 });
+            }else if(obj.event === 'edit'){
+                var index = layer.open({
+                    type: 2,
+                    title:'修改',
+                    content: '{:url("posEdit")}?id='+data.id,
+                    area: ['800px', '600px'],
+                    maxmin: true
+                });
+                layer.full(index);
             }
 
 
@@ -113,7 +105,7 @@
 
         form.on('switch(status)', function(data){
                 loading =layer.load(1, {shade: [0.1,'#fff']});
-                $.post("{:url('groupState')}",{id:data.value},function(res){
+                $.post("{:url('posState')}",{id:data.value},function(res){
                     layer.close(loading);
                     if(res.code>0){
                         layer.msg(res.msg,{time:1000,icon:1});
@@ -123,6 +115,26 @@
                 });
         });
 
+        $('#search').click(function () {
+            var $keys = $('#keys').val();
+            if(!$keys){
+                return layer.msg('请输入关键词');
+            }
+
+            tableIn.reload({ page: {page: 1},where: {keys: $keys}});
+
+        })
+
+        $('#LM-add').click(function () {
+            var index = layer.open({
+                type: 2,
+                title:'添加',
+                content: '{:url("posAdd")}',
+                area: ['800px', '600px'],
+                maxmin: true
+            });
+            layer.full(index);
+        })
     });
 
 

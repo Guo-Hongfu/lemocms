@@ -1,18 +1,4 @@
 <?php
-/**
- * lemomall
- * ============================================================================
- * 版权所有 2019-2027 深圳市徕默科技有限公司，并保留所有权利。
- * 网站地址: https:www.lemomall.com
- * ----------------------------------------------------------------------------
- * 这不是一个自由软件！您只能在不用于商业目的的前提下对程序代码进行修改和使用 .
- * 不允许对程序代码以任何形式任何目的的再发布。
- * 如果商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
- * 采用最新Thinkphp6实现
- * ============================================================================
- * Author: lemomall
- * Date: 2019/8/9
- */
 
 namespace app\admin\controller;
 use app\admin\model\Admin;
@@ -21,6 +7,7 @@ use app\BaseController;
 use think\facade\Db;
 use think\facade\Request;
 use think\facade\Session;
+use think\facade\View;
 class Base extends BaseController{
     public $pageSize=15;
     public $menu = '';
@@ -47,7 +34,7 @@ class Base extends BaseController{
             'index/main',
             'index/cleardata',
             'index/logout',
-            'index/password',
+            'login/password',
             ];
         $route = strtolower(Request::controller()).'/'.strtolower(Request::action());
         if(session('admin.id')!==1){
@@ -93,7 +80,7 @@ class Base extends BaseController{
      */
     public function password(){
         if (!Request::isPost()){
-            return View::fetch('admin/password');
+            return View::fetch('login/password');
         }else{
             $data =  Request::post();
             $oldpassword = Request::post('oldpassword',  'strval');

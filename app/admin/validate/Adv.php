@@ -1,20 +1,20 @@
 <?php
-
-
 namespace app\admin\validate;
 
 use think\validate;
 
-class Link extends validate
+class Adv extends validate
 {
     protected $rule = [
-        'name|名字' => [
+        'pid|广告位置' => [
             'require' => 'require',
-            'max'     => '255',
         ],
-        'url|网站地址' => [
+        'ad_image|广告图片' => [
             'require' => 'require',
-            'max'     => '255',
         ],
+        'ad_name|广告名' => [
+            'require' => 'require',
+        ],
+
     ];
 }

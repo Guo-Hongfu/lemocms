@@ -29,6 +29,7 @@ class Database extends Base
                 $list[$k]['size'] = format_bytes($v['data_length']);
                 $total += $v['data_length'];
             }
+
             return $result = ['code'=>0,'msg'=>'获取成功!','data'=>$list,'total'=>format_bytes($total),'tableNum'=>count($list),'rel'=>1];
         }
         return View::fetch();

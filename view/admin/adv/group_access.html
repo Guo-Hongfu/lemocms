@@ -1,0 +1,87 @@
+{include file="common/header"/}
+<div class="LM-container">
+    <div class="LM-main">
+        <div class="admin-main layui-anim layui-anim-upbit">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend>权限分配</legend>
+                <blockquote class="layui-elem-quote">
+                    <button type="button" class="layui-btn layui-btn-sm" lay-demo="setChecked">全选</button>
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-warm" lay-demo="reload">取消</button>
+                </blockquote>
+
+            </fieldset>
+            <div class="layui-form-item">
+                <div id="tree" class="demo-tree-more"></div>
+
+            </div>
+
+            <form class="layui-form layui-form-pane" lay-filter="form">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="hidden" name="id"  >
+                        <button type="button" class="layui-btn" lay-submit="" lay-filter="submit">{:lang('submit')}</button>
+                        <a href="{:url('group')}" class="layui-btn layui-btn-primary">{:lang('back')}</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{include file="common/footer"/}
+<script>
+    layui.use(['form', 'table','tree','form'], function () {
+        var $ = layui.jquery,
+            util = layui.util,
+            form = layui.form,
+            tree = layui.tree;
+        var idList = {:json_encode($idList)};
+        tree.render({
+            elem: '#tree'
+            ,data: {:json_encode($list)}
+            ,showCheckbox: true  //是否显示复选框
+            ,id: 'treebox'
+            ,showLine:true
+            ,accordion:true//是否开启手风琴模式，默认 false
+            ,isJump: false //是否允许点击节点时弹出新窗口跳转
+
+
+        });
+
+        //按钮事件
+        util.event('lay-demo', {
+            getChecked: function (othis) {
+                var checkedData = tree.getChecked('treebox'); //获取选中节点的数据
+            }
+            , setChecked: function () {
+                tree.setChecked('treebox', idList); //勾选指定节点
+            }
+            , reload: function () {
+                //重载实例
+                tree.reload('treebox', {});
+
+            }
+        })
+        form.on('submit(submit)', function (data) {
+            loading =layer.load(1, {shade: [0.1,'#fff']});
+            var data  = tree.getChecked('treebox');
+            console.log(data);
+            console.log(data);
+            $.post("groupSetaccess", {rules:data,group_id:'{$group_id}'}, function (res) {
+                layer.close(loading);
+                if (res.code > 0) {
+                    layer.msg(res.msg, {time: 1800, icon: 1}, function () {
+                        location.href = res.url;
+                    });
+                } else {
+                    layer.msg(res.msg, {time: 1800, icon: 2});
+                }
+            });
+        });
+
+
+    });
+
+
+</script>
