@@ -30,6 +30,10 @@ Lemocms1.0.0管理系统：为二次开发而生，让开发变得更简单
 【系统 - 首页】
 ![image](public/static/admin/images/index.png)
 
+【系统 - 首页】
+![image](public/static/admin/images/page.png)
+
+
 若此项目能得到你的青睐，支持开源项目，可以捐赠支持作者持续开发与维护,这样小哥哥小姐姐更加努力哦。
 
 ![image](public/static/admin/images/pay.png)
