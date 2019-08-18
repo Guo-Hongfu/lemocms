@@ -31,7 +31,7 @@ class Login extends BaseController {
 
         } else {
             //验证表单登录token
-            $check = Request::checkToken('__token__');
+            $check = Request::checkToken(config('admin.token'));
             if(false === $check) {
                 $this->error("登陆失败：invalid token");
             }
