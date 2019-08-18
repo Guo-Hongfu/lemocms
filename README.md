@@ -30,7 +30,7 @@ Lemocms1.0.0管理系统：为二次开发而生，让开发变得更简单
 【系统 - 首页】
 ![image](public/static/admin/images/index.png)
 
-【系统 - 首页】
+【系统 - 内容管理】
 ![image](public/static/admin/images/page.png)
 
 
