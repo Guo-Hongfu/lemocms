@@ -2,13 +2,11 @@
 
 namespace app\admin\controller;
 
-use app\admin\model\AdvPosition;
-use think\facade\Config;
+use app\common\model\AdvPosition;
 use think\facade\Db;
 use think\facade\Request;
-use think\facade\Session;
 use think\facade\View;
-use app\admin\model\Adv as AdvModel;
+use app\common\model\Adv as AdvModel;
 class Adv extends Base{
 
     public function initialize(){

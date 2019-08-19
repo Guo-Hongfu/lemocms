@@ -4,7 +4,7 @@ namespace app\admin\controller;
 
 use think\facade\Request;
 use think\facade\View;
-use app\admin\model\Link as LinkModel;
+use app\common\model\Link as LinkModel;
 use think\Validate;
 
 class Link extends Base
