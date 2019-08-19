@@ -1,11 +1,9 @@
-Lemocms1.0.0 本系统长期更新,欢迎star和提出和反馈问题 
-
+### 导读
+Lemocms1.0.1 本系统长期更新,欢迎star和提出和反馈问题 
 QQ群 455018252
-
 ### 前言
-
 Lemocms1.0.0管理系统：为二次开发而生，让开发变得更简单
- + 这是一款快速、高效、便捷、灵活的应用开发骨架。
+ + 这是一款快速、高效、便捷、灵活的应用开发框架。
  + 采用最新TP6.0.3 框架，后续随官网升级而升级
  + 后台RBAC权限
  + 站点管理
@@ -53,7 +51,7 @@ lemocms遵循Apache2开源协议发布，并提供免费使用。
 
 本项目包含的第三方源码和二进制文件之版权信息另行标注。
 
-版权所有Copyright © 2018-2019 by lemocms遵循Apache2开源协议发布 [www.lemocms.com](http://www.lemocms.com)
+版权所有Copyright © 2018-2019 by lemocms遵循Apache2开源协议发布 [www.lemocms.com](https://www.lemocms.com)
 
 All rights reserved。
 
